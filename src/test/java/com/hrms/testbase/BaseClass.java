@@ -4,45 +4,52 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import com.hrms.utils.ConfigsReader;
+import com.hrms.utils.Constants;
 
 public class BaseClass {
-	
-	static WebDriver driver;
+
+	public static WebDriver driver;
+
 	@BeforeMethod(alwaysRun = true)
 	public void setUp() {
-		
-		ConfigsReader.readProperties(System.getProperty("user.dir"+"src/test/resources/configs/configuration.properties"));
+
+		ConfigsReader.readProperties(Constants.CONFIGURATION_FILEPATH);
+				
 		switch (ConfigsReader.getPropValue("browser").toLowerCase()) {
 		case "chrome":
-			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir"+"/src/test/resources/drivers/chromedrive.exe"));
-			 driver =new ChromeDriver();
-			
+			System.setProperty("webdriver.chrome.driver",
+					Constants.CHROMEDRIVER_FILEPATH);
+			driver = new ChromeDriver();
+			break;
 		case "firefox":
-			System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir"+"/src/test/resources/drivers/geckodriver.exe"));
-			 driver =new FirefoxDriver();
-			 break;
-	
-			 
-			 default:
-				 throw new RuntimeException("Browser is not supported");
+			System.setProperty("webdriver.gecko.driver",
+					Constants.FIREFOX_FILEPATH);
+			driver = new FirefoxDriver();
+			break;
+		case "edge":
+			System.setProperty("webdriver.edge.driver",
+					Constants.EDGEDRIVER_FILEPATH);
+			driver = new EdgeDriver();
+			break;
+		default:
+			throw new RuntimeException("Browser is not supported");
 		}
 		driver.manage().window().maximize();
-		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(Constants.IMPLICIT_WAIT_TIME, TimeUnit.SECONDS);
 		driver.get(ConfigsReader.getPropValue("ApplicationUrl"));
 	}
+
 	@AfterMethod(alwaysRun = true)
 	public void tearDown() {
-		if(driver!=null) {
+		if (driver != null) {
 			driver.quit();
 		}
 	}
-	
-	
-	
 
 }
