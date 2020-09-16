@@ -7,20 +7,27 @@ import org.openqa.selenium.support.PageFactory;
 import com.hrms.testbase.BaseClass;
 
 public class LoginPageElements extends BaseClass {
+
 	@FindBy(id = "txtUsername")
-	public WebElement userNameTextBox;
-	
-	@FindBy(id = "txtPassword")
-	public WebElement passwordTextBox;
-	
-	@FindBy(id = "btnLogin")
-	public WebElement loginButton;
-	
+	public  WebElement userNametextBox;
+
+	@FindBy(xpath = "//input[@id = 'txtPassword']")
+	public  WebElement passwordTextBox;
+
+	@FindBy(css = "input#btnLogin")
+	public WebElement btnLogin;
+
+	@FindBy(id = "divLogo")
+	public WebElement syntaxLogo;
+
 	@FindBy(id = "spanMessage")
-	public WebElement invalidCredentialsText;
-	
+	public WebElement spanMessage;
+
+	@FindBy(id = "logInPanelHeading")
+	public WebElement loginPanelHeading;
+
 	public LoginPageElements() {
 		PageFactory.initElements(driver, this);
-		
 	}
+
 }
